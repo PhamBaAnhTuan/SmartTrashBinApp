@@ -26,11 +26,11 @@ const Layout = () => {
         tabBarLabelStyle:{
           fontSize: 10,
           fontWeight: 'bold',
-          marginBottom: 15,
+          // marginBottom: 15,
         },
         tabBarActiveTintColor: theme.text,
         tabBarStyle:{
-          height: 65,
+          height: 70,
           borderColor: theme.bgc
         }
       }}

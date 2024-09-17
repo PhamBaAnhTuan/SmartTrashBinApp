@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
 
   signInBtn: {
     height: 50,
-    width: '70%',
+    width: '90%',
     // borderWidth: 1,
     borderRadius: 5,
     backgroundColor: '#008a00',
