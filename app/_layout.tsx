@@ -4,6 +4,7 @@ import { Slot, useSegments } from 'expo-router';
 // Context
 import { AuthContextProvider, useAuth } from '../context/AuthContext';
 import { ThemeContextProvider, useTheme } from '../context/ThemeContext';
+import { DataContextProvider, useData } from '../context/DataContext';
 
 const MainLayout = () => {
   const { router, isAuthenticated } = useAuth();
@@ -27,7 +28,9 @@ const RootLayout = () => {
   return (
     <AuthContextProvider>
       <ThemeContextProvider>
-        <MainLayout />
+        <DataContextProvider>
+          <MainLayout />
+        </DataContextProvider>
       </ThemeContextProvider>
     </AuthContextProvider>
   );

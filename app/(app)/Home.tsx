@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar';
 import axios from 'axios';
-// Theme
+// Context
 import { useTheme } from '@/context/ThemeContext';
+import { useData } from '@/context/DataContext';
 // Icons
 import { AntDesign, FontAwesome5, FontAwesome6, Fontisto, Ionicons, MaterialIcons } from '@expo/vector-icons';
 // Pie charts
@@ -13,28 +14,10 @@ import PieChart from 'react-native-pie-chart';
 import ControlCard from '@/component/Home/ControlCard'
 
 const Home = () => {
+   // Theme
    const { theme } = useTheme();
-   const organic = [70, 30];
-   const organicColor = ['orange', '#fff']
-   const inorganic = [90, 10];
-   const inorganicColor = ['green', '#fff']
-
-   const [trashes, setTrashes] = useState([]);
-
-   const getTrashes = async () => {
-      try {
-         const response = await axios.get('http://172.16.67.30:8000/trashes/');
-         // const response = await axios.get('https://636bcb44ad62451f9fbbf363.mockapi.io/TuanPham/api/vn/trashes/');
-         setTrashes(response.data);
-      } catch (error) {
-         console.error('Error fetching data:', error);
-      }
-   };
-   useEffect(() => {
-      getTrashes();
-   }, []);
-
-   const log = () => console.log(trashes);
+   // Data
+   const { organic, organicColor, inOrganic, inOrganicColor } = useData();
 
    return (
       <SafeAreaView style={{ backgroundColor: theme.bgc, flex: 1 }}>
@@ -51,7 +34,7 @@ const Home = () => {
                </View>
 
                <View style={styles.headerRight}>
-                  <TouchableOpacity onPress={log}><Fontisto name="bell" size={24} color={theme.text} /></TouchableOpacity>
+                  <TouchableOpacity><Fontisto name="bell" size={24} color={theme.text} /></TouchableOpacity>
                   <TouchableOpacity><Ionicons name="add-circle" size={28} color={theme.text} /></TouchableOpacity>
                </View>
             </View>
@@ -96,39 +79,29 @@ const Home = () => {
                </View>
             </View>
 
-            {trashes.map((item, index) => (
-               <View style={[styles.chartContainer, { backgroundColor: theme.blue }]} key={index}>
-                  <View style={styles.pieChartContainer}>
-                     {/* {trashes.map((item, index) => (
-                     <Text key={index}>{item.organic}</Text>
-                  ))} */}
-                     <Text style={{ color: 'white', fontWeight: 'bold' }}>Organic waste</Text>
-                     <PieChart
-                        style={{ marginVertical: 10 }}
-                        widthAndHeight={100}
-                        series={organic}
-                        sliceColor={organicColor}
-                        coverRadius={0.55}
-                        coverFill={'#0e1e2d'}
-                     />
-                     <Text style={{ color: 'white' }}>{item.organic}%</Text>
+            <View style={[styles.chartContainer, { backgroundColor: theme.blue }]}>
+               <View style={styles.pieChartContainer}>
+                  <Text style={{ color: 'white', fontWeight: 'bold' }}>Organic waste</Text>
+                  <PieChart
+                     style={{ marginVertical: 10 }}
+                     widthAndHeight={100}
+                     series={organic}
+                     sliceColor={organicColor}
+                  />
+                  <Text style={{ color: 'white' }}>{organic[0]}%</Text>
 
-                  </View>
-                  <View style={styles.pieChartContainer}>
-                     <Text style={{ color: 'white', fontWeight: 'bold' }}>Inorganic waste</Text>
-                     <PieChart
-                        style={{ marginVertical: 10 }}
-                        widthAndHeight={100}
-                        series={inorganic}
-                        sliceColor={inorganicColor}
-                        coverRadius={0.55}
-                        coverFill={'#0e1e2d'}
-                     />
-                     <Text style={{ color: 'white' }}>{item.inorganic}%</Text>
-                  </View>
                </View>
-            ))}
-
+               <View style={styles.pieChartContainer}>
+                  <Text style={{ color: 'white', fontWeight: 'bold' }}>Inorganic waste</Text>
+                  <PieChart
+                     style={{ marginVertical: 10 }}
+                     widthAndHeight={100}
+                     series={inOrganic}
+                     sliceColor={inOrganicColor}
+                  />
+                  <Text style={{ color: 'white' }}>{inOrganic[0]}%</Text>
+               </View>
+            </View>
 
             <View style={styles.otherDeviceContainer}>
                <ControlCard
