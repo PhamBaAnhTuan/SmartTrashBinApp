@@ -82,12 +82,16 @@ const Home = () => {
             <View style={[styles.chartContainer, { backgroundColor: theme.blue }]}>
                <View style={styles.pieChartContainer}>
                   <Text style={{ color: 'white', fontWeight: 'bold' }}>Organic waste</Text>
+                  {/* PieChart này để hiển thị data trashes */}
                   <PieChart
                      style={{ marginVertical: 10 }}
                      widthAndHeight={100}
+                     //  series={organic} là data organic trash đc import từ DataContext đc hiển thị trên biểu đồ
                      series={organic}
+                     // sliceColor={organicColor}: hiển thị màu cho biểu đồ
                      sliceColor={organicColor}
                   />
+                  {/* Hiển thị % organic[0] bvi biến organic là mảng chứa 2 biến: organic trash và thang 100% - biến organic*/}
                   <Text style={{ color: 'white' }}>{organic[0]}%</Text>
 
                </View>
@@ -135,12 +139,14 @@ export default Home
 
 const styles = StyleSheet.create({
    headerContainer: {
-      height: 70,
-      width: '100%',
+      height: 80,
+      width: '97%',
       // borderWidth: 1,
       flexDirection: 'row',
+      alignSelf: 'center',
       alignItems: 'center',
       justifyContent: 'space-between',
+      paddingHorizontal: 5
    },
 
 
@@ -155,7 +161,7 @@ const styles = StyleSheet.create({
       height: 50,
       width: 50,
       borderRadius: 50,
-      marginHorizontal: 10
+      marginRight: 10
    },
    welcomeText: {
       fontSize: 12,
@@ -168,17 +174,17 @@ const styles = StyleSheet.create({
 
    headerRight: {
       height: '100%',
-      width: '30%',
+      width: '20%',
       // borderWidth: 1,
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'space-around'
+      justifyContent: 'space-between'
    },
 
 
    energyContainer: {
       height: 150,
-      width: '95%',
+      width: '97%',
       alignSelf: 'center',
       borderRadius: 10,
       marginBottom: 7
@@ -218,7 +224,7 @@ const styles = StyleSheet.create({
 
    chartContainer: {
       height: 'auto',
-      width: '95%',
+      width: '97%',
       alignSelf: 'center',
       alignItems: 'center',
       justifyContent: 'space-around',
@@ -234,7 +240,7 @@ const styles = StyleSheet.create({
 
    otherDeviceContainer: {
       height: 'auto',
-      width: '95%',
+      width: '97%',
       alignSelf: 'center',
       flexDirection: 'row',
       flexWrap: 'wrap',

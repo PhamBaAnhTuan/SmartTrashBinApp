@@ -7,12 +7,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../context/ThemeContext';
 
 const Layout = () => {
-  const {theme} = useTheme();
+  // theme đc import từ ThemeContext.
+  const { theme } = useTheme();
+  // interface để định nghĩa các props truyền vào các biến bên dưới
   interface TabBarProps {
     focused: boolean;
     color: string;
     size: number;
-    // name: string;
   }
   return (
 
@@ -23,16 +24,15 @@ const Layout = () => {
         tabBarActiveBackgroundColor: theme.bgc,
         tabBarInactiveBackgroundColor: theme.bgc,
         tabBarInactiveTintColor: 'gray',
-        tabBarLabelStyle:{
+        tabBarLabelStyle: {
           fontSize: 10,
           fontWeight: 'bold',
-          // marginBottom: 15,
+          marginBottom: 15,
         },
         tabBarActiveTintColor: theme.text,
-        tabBarStyle:{
-          height: 70,
-          borderColor: theme.bgc
-        }
+        tabBarStyle: {
+          height: 65,
+      }
       }}
     >
       <Tabs.Screen
