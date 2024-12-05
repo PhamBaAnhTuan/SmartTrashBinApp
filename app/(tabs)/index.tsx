@@ -1,74 +1,267 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import {
+  Image, StyleSheet, Platform, View, Text, ScrollView, TouchableOpacity, useColorScheme
 
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+// components
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import ControlCard from '@/components/home/ControlCard';
+// icons
+import { AntDesign, FontAwesome5, FontAwesome6, Fontisto, Ionicons, MaterialIcons } from '@expo/vector-icons';
+// charts
+import PieChart from 'react-native-pie-chart';
+import { StatusBar } from 'expo-status-bar';
+// theme
+import { Colors } from '@/constants/Colors';
+// context
+import { useData } from '@/contexts/DataContext';
 
-export default function HomeScreen() {
+const HomeScreen = () => {
+  // Theme
+  const colorScheme = useColorScheme();
+  const color = Colors[colorScheme ?? 'light'];
+  // Redux
+  const {router, dispatch, useAuthSelector} = useData();
+  const {isAuthenticated, user, trash} = useAuthSelector;
+  // Data
+  const organic = [trash[0].organic, 100 - trash[0].organic];
+  const inOrganic = [trash[0].inOrganic, 100 - trash[0].inOrganic];
+  // Log
+  const log = () => {
+    console.log(
+      'isAuthenticated: ', isAuthenticated,
+      '\nuser: ', user,
+      '\nTrash: ', trash[0]
+    );
+  }
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <SafeAreaView style={{ backgroundColor: color.background, flex: 1 }}>
+      {/* <StatusBar backgroundColor={'#12283d'} /> */}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.headerContainer}>
+          <View style={styles.headerLeft}>
+            <Image style={styles.userImg} source={require('../../assets/images/e-lok.jpg')} resizeMode='cover' />
+
+            <View>
+              <Text style={[styles.welcomeText, { color: color.text }]}>Welcome</Text>
+              <Text style={[styles.userText, { color: color.text }]}>{user?.username || 'TuanPham'}</Text>
+            </View>
+          </View>
+
+          <View style={styles.headerRight}>
+            <TouchableOpacity onPress={log}>
+              <Fontisto name="bell" size={24} color={color.text} />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Ionicons name="add-circle" size={28} color={color.text} />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={[styles.energyContainer, { backgroundColor: '#0e1e2d' }]}>
+          <View style={styles.energyWrap}>
+            <View style={styles.detailContainer}>
+              <FontAwesome6 name="circle-nodes" size={24} color={color.onText} />
+              <Text style={{ color: color.onText, marginLeft: 5 }}>Energy usage</Text>
+            </View>
+
+            <View style={styles.detailContainer}>
+              <FontAwesome6 name="calendar-plus" size={24} color={color.onText} />
+              <Text style={{ color: color.onText, marginLeft: 5 }}>12/9/2024</Text>
+            </View>
+          </View>
+
+          <View style={styles.infoContainer}>
+            <View style={styles.detailContainer}>
+              <View style={{ backgroundColor: '#00aeae', borderRadius: 100, padding: 7, marginRight: 10 }}>
+                <FontAwesome6 name="plug-circle-bolt" size={20} color={color.onText} />
+              </View>
+
+              <View>
+                <Text style={{ color: color.onText }}>Today</Text>
+                <Text style={{ color: color.onText, fontWeight: 'bold' }}>28.6 kMh</Text>
+              </View>
+            </View>
+
+            <View style={{ height: '100%', width: 1, backgroundColor: color.onText }}></View>
+
+            <View style={styles.detailContainer}>
+              <View style={{ backgroundColor: '#ff6897', borderRadius: 100, padding: 7, marginRight: 10 }}>
+                <MaterialIcons name="electric-bolt" size={24} color={color.onText} />
+              </View>
+
+              <View>
+                <Text style={{ color: color.onText }}>This month</Text>
+                <Text style={{ color: color.onText, fontWeight: 'bold' }}>678.6 kMh</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        <View style={[styles.chartContainer, { backgroundColor: color.card }]}>
+          <View style={styles.pieChartContainer}>
+            <Text style={{ color: color.onText, fontWeight: 'bold' }}>Organic waste</Text>
+            <PieChart
+              style={{ marginVertical: 10 }}
+              widthAndHeight={100}
+              series={organic}
+              sliceColor={['green', color.onText]}
+            />
+            <Text style={{ color: color.onText }}>{organic}%</Text>
+
+          </View>
+
+          <View style={styles.pieChartContainer}>
+            <Text style={{ color: color.onText, fontWeight: 'bold' }}>Inorganic waste</Text>
+            <PieChart
+              style={{ marginVertical: 10 }}
+              widthAndHeight={100}
+              series={inOrganic}
+              sliceColor={['tomato', color.onText]}
+            />
+            <Text style={{ color: color.onText }}>{inOrganic}%</Text>
+          </View>
+        </View>
+
+        <View style={styles.otherDeviceContainer}>
+          <ControlCard
+            title='Living Room'
+            devices={5}
+            icon={<AntDesign name='home' size={24} color={color.onText} />}
+          />
+          <ControlCard
+            title='Kitchen Room'
+            devices={4}
+            icon={<MaterialIcons name="kitchen" size={24} color={color.onText} />}
+          />
+          <ControlCard
+            title='Bedroom'
+            devices={4}
+            icon={<Ionicons name="bed" size={24} color={color.onText} />}
+          />
+          <ControlCard
+            title='Bathroom'
+            devices={3}
+            icon={<FontAwesome5 name="bath" size={24} color={color.onText} />}
+          />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
+export default HomeScreen;
+
 const styles = StyleSheet.create({
-  titleContainer: {
+  headerContainer: {
+    height: 80,
+    width: '97%',
+    // borderWidth: 1,
+    flexDirection: 'row',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 5
+  },
+
+
+  headerLeft: {
+    height: '100%',
+    width: '70%',
+    // borderWidth: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  userImg: {
+    height: 50,
+    width: 50,
+    borderRadius: 50,
+    marginRight: 10
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  welcomeText: {
+    fontSize: 12,
+    // fontWeight: 'bold'
   },
+  userText: {
+    fontSize: 15,
+    fontWeight: 'bold'
+  },
+
+  headerRight: {
+    height: '100%',
+    width: '20%',
+    // borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+
+
+  energyContainer: {
+    height: 150,
+    width: '97%',
+    alignSelf: 'center',
+    borderRadius: 10,
+    marginBottom: 7
+  },
+
+  energyWrap: {
+    height: '50%',
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  dayWrap: {
+    // height: 'auto',
+    width: 'auto',
+    // borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  infoContainer: {
+    height: '45%',
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+
+  detailContainer: {
+    height: '100%',
+    width: '45%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+
+  chartContainer: {
+    height: 'auto',
+    width: '97%',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    borderRadius: 10,
+    paddingVertical: 15,
+    marginBottom: 7
+  },
+  pieChartContainer: {
+    alignItems: 'center',
+  },
+
+
+  otherDeviceContainer: {
+    height: 'auto',
+    width: '97%',
+    alignSelf: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  }
 });
