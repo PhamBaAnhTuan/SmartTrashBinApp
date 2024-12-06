@@ -23,7 +23,7 @@ const MainLayout = () => {
     if (typeof isAuthenticated == 'undefined') return;
 
     const inApp = segments[0] === '(tabs)';
-    if (isAuthenticated && !inApp) {
+    if (isAuthenticated === true && !inApp) {
       router.replace('(tabs)')
     } else {
       router.replace('signin');

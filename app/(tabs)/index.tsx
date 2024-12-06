@@ -27,8 +27,8 @@ const HomeScreen = () => {
   const {router, dispatch, useAuthSelector} = useData();
   const {isAuthenticated, user, trash} = useAuthSelector;
   // Data
-  const organic = [trash[0].organic, 100 - trash[0].organic];
-  const inOrganic = [trash[0].inOrganic, 100 - trash[0].inOrganic];
+  const organic = [trash[0]?.organic, 100 - trash[0]?.organic];
+  const inOrganic = [trash[0]?.inOrganic, 100 - trash[0]?.inOrganic];
   // Log
   const log = () => {
     console.log(

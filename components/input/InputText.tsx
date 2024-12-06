@@ -18,7 +18,7 @@ const InputText = (props: Props) => {
    const color = Colors[colorScheme ?? 'light'];
    return (
       <View style={{marginBottom: 20}}>
-         <Text style={[styles.title, { color: color.onText }]}>{props.title}</Text>
+         <Text style={[styles.title, { color: color.text }]}>{props.title}</Text>
          <TextInput style={[styles.textInput, { color: color.background, backgroundColor: color.tint }]}
             keyboardType={props.keyboardType}
             onChangeText={props.onChangeText}
