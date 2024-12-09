@@ -40,6 +40,7 @@ const Profile = () => {
       ]
     )
   };
+  // get dữ liệu rác từ server
   const getData = () => {
     dispatch(getTrashData());
   }

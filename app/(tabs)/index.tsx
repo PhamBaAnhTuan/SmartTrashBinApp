@@ -20,13 +20,19 @@ import { Colors } from '@/constants/Colors';
 import { useData } from '@/contexts/DataContext';
 
 const HomeScreen = () => {
-  // Theme
+  // import cac bien tu Context
+  const { router, dispatch, useAuthSelector, userName, password, setUserName, setPassword, resetAuth } = useData();
+  // import cac bien tu Redux
+  const { isAuthenticated, user, trash } = useAuthSelector;
+  // colorScheme để xác định chủ đề màu của điện thoại: sáng hoặc tối, light hoặc dark
   const colorScheme = useColorScheme();
+  // color, [colorScheme ?? 'light']: sẽ trả về light hoặc dark, từ đó Colors sẽ trả về mảng màu tương ứng với chủ đề light hoặc dark.
   const color = Colors[colorScheme ?? 'light'];
-  // Redux
-  const {router, dispatch, useAuthSelector} = useData();
-  const {isAuthenticated, user, trash} = useAuthSelector;
-  // Data
+  // trash[0]: vì trong biến trash có 1 object nên index là 0.
+  // trash[0]?.organic: là dữ liệu từ organic
+  // trash[0]?.inOrganic: là dữ liệu từ inOrganic.
+  // dữ liệu của biến trash: {"id": 1, "inOrganic": "5.0", "organic": "3.0"}
+  // dữ liệu tính trên thang 100% nên lấy 100 - trash[0]?.organic = % còn lại.
   const organic = [trash[0]?.organic, 100 - trash[0]?.organic];
   const inOrganic = [trash[0]?.inOrganic, 100 - trash[0]?.inOrganic];
   // Log
