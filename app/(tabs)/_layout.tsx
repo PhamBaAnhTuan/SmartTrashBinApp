@@ -23,7 +23,7 @@ export default function TabLayout() {
         tabBarStyle: {
           height: 60,
         },
-        tabBarShowLabel: false
+        tabBarShowLabel: true
       }}>
       <Tabs.Screen
         name="index"

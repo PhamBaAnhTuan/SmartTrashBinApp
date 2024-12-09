@@ -20,10 +20,10 @@ const MainLayout = () => {
   const segments = useSegments();
 
   useEffect(() => {
-    if (typeof isAuthenticated == 'undefined') return;
+    if (typeof isAuthenticated === 'undefined') return;
 
     const inApp = segments[0] === '(tabs)';
-    if (isAuthenticated === true && !inApp) {
+    if (isAuthenticated && !inApp) {
       router.replace('(tabs)')
     } else {
       router.replace('signin');

@@ -15,12 +15,15 @@ interface Props {
    onChangeText: any
 }
 const InputPassword = (props: Props) => {
-   // Theme
-  const colorScheme = useColorScheme();
-  const color = Colors[colorScheme ?? 'light'];
-   // Handle visible passwords
-   const [eye, setEye] = useState('eye')
+   // colorScheme để xác định chủ đề màu của điện thoại: sáng hoặc tối, light hoặc dark
+   const colorScheme = useColorScheme();
+   // color, [colorScheme ?? 'light']: sẽ trả về light hoặc dark, từ đó Colors sẽ trả về mảng màu tương ứng với chủ đề light hoặc dark.
+   const color = Colors[colorScheme ?? 'light'];
+   // khai báo biến eye để gán vào tên icon, icon là eye
+   const [eye, setEye] = useState('eye');
+   // khai báo biến hide để hiện hoặc ẩn password
    const [hide, setHide] = useState(true);
+   // Handle visible passwords
    const hidePass = () => {
       eye == 'eye' ? setEye('eye-off') : setEye('eye');
       hide === true ? setHide(false) : setHide(true);

@@ -20,33 +20,26 @@ import { getTrashData, signInAction } from '@/redux/reducer/authActions';
 
 
 const Signin = () => {
-   // Redux
+   // import cac bien tu Context
    const { router, dispatch, useAuthSelector, userName, password, setUserName, setPassword, resetAuth } = useData();
+   // import cac bien tu Redux
    const { isAuthenticated, user, trash } = useAuthSelector;
-   // Theme
+   // colorScheme để xác định chủ đề màu của điện thoại: sáng hoặc tối, light hoặc dark
    const colorScheme = useColorScheme();
+   // color, [colorScheme ?? 'light']: sẽ trả về light hoặc dark, từ đó Colors sẽ trả về mảng màu tương ứng với chủ đề light hoặc dark.
    const color = Colors[colorScheme ?? 'light'];
-   // Handle visible passwords
-   const [eye, setEye] = useState('eye')
-   const [hide, setHide] = useState(true);
-   const hidePass = () => {
-      eye == 'eye' ? setEye('eye-off') : setEye('eye');
-      hide === true ? setHide(false) : setHide(true);
-   };
+   // khai báo biến để gán vào icon, icon ten checkbox-passive.
    const [remember, setRemember] = useState('checkbox-passive')
+   // xử lý ghi nhớ tkhoan, mk
    const handleRemember = () => {
+      // toán tử 3 ngôi, nếu biến remember == 'checkbox-passive' thì setRemember('checkbox-active'), còn kh thì setRemember('checkbox-passive');
+      // mục đích để tích hoặc bỏ tích icon remember me.
       remember == 'checkbox-passive' ? setRemember('checkbox-active') : setRemember('checkbox-passive');
    };
-   // Sign in method
-   const [loading, setLoading] = useState(false);
-   // Handle sign in
+   // Handle sign in, chuyển hướng (dispatch) signInAction để lưu dữ liệu vào redux.
+   // signInAction(userName, password, resetAuth): nhận 3tham số userName, password để gửi lên server, còn resetAuth để reset form.
    const signIn = () => dispatch(signInAction(userName, password, resetAuth));
-   // useEffect(() => {
-   //    if(isAuthenticated === true){
-   //       dispatch(getTrashData());
-   //    }
-   // }, [isAuthenticated]);
-   
+   // hiển thị dữ liệu ra console.log
    const log = () => {
       console.log(
          'isAuthenticated: ', isAuthenticated,
@@ -68,6 +61,8 @@ const Signin = () => {
                keyboardType={'default'}
                hideText={false}
                value={userName}
+               // Khi người dùng nhập hoặc sửa đổi input này, 
+               // hàm này sẽ được gọi, truyền giá trị cho setUserName, sau đó cập nhật trạng thái của userName.
                onChangeText={x => setUserName(x)}
             />
             <InputPassword
@@ -80,7 +75,9 @@ const Signin = () => {
          </View>
 
          <View style={styles.rememberContainer}>
+            {/* onPress={handleRemember} để xử lý nút remember me */}
             <TouchableOpacity style={styles.rmbWrapLeft} onPress={handleRemember}>
+               {/* biến remember đc dùng ở name này */}
                <Fontisto name={remember} size={20} color={color.text} />
                <Text style={{ fontSize: 12, color: color.text }}>Remember me</Text>
             </TouchableOpacity>
@@ -98,6 +95,7 @@ const Signin = () => {
                : ( */}
             <TouchableOpacity
                style={[styles.signInBtn, { backgroundColor: color.blue }]}
+               // onPress={signIn}: để xử lý đăng nhập
                onPress={signIn}>
                <Text style={{ color: color.text, fontSize: 17, fontWeight: 'bold' }}>Sign in</Text>
             </TouchableOpacity>
